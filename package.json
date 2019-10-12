@@ -1,6 +1,6 @@
 {
   "name": "quill-video-resize-module-fixed-mobile",
-  "version": "1.0.3",
+  "version": "1.0.8",
   "description": "A module for Quill rich text editor to allow videos to be resized. fixed for mobile",
   "main": "video-resize.min.js",
   "scripts": {
@@ -34,9 +34,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Y-WeCode/quill-video-resize-module/issues"
+    "url": "https://github.com/besideL/quill-video-resize-module/issues"
   },
-  "homepage": "https://github.com/Y-WeCode/quill-video-resize-module#readme",
+  "homepage": "https://github.com/besideL/quill-video-resize-module#readme",
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-eslint": "^7.2.1",
