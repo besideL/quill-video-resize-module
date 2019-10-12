@@ -1,6 +1,4 @@
-import {
-	BaseModule
-} from './BaseModule'
+import { 	BaseModule } from './BaseModule'
 
 export class Resize extends BaseModule {
 	onCreate() {
@@ -25,22 +23,12 @@ export class Resize extends BaseModule {
 		const handleXOffset = `${-parseFloat(this.options.handleStyles.width) / 2}px`
 		const handleYOffset = `${-parseFloat(this.options.handleStyles.height) / 2}px`
 
-		[{
-				left: handleXOffset,
-				top: handleYOffset
-			}, // top left
-			{
-				right: handleXOffset,
-				top: handleYOffset
-			}, // top right
-			{
-				right: handleXOffset,
-				bottom: handleYOffset
-			}, // bottom right
-			{
-				left: handleXOffset,
-				bottom: handleYOffset
-			} // bottom left
+    // set the top and left for each drag handle
+		[
+      { left: handleXOffset, top: handleYOffset	}, // top left
+			{ right: handleXOffset, top: handleYOffset }, // top right
+			{ right: handleXOffset,	bottom: handleYOffset }, // bottom right
+			{	left: handleXOffset, bottom: handleYOffset } // bottom left
 		].forEach((pos, idx) => {
 			Object.assign(this.boxes[idx].style, pos)
 		})
@@ -59,35 +47,48 @@ export class Resize extends BaseModule {
 		box.style.height = `${this.options.handleStyles.height}px`
 
 		// listen for mousedown on each box
-		box.addEventListener('mousedown', evt => {
-			this.handleMousedown(evt)
-		}, false)
+		box.addEventListener('touchstart', this.handleMousedown, false)
+		box.addEventListener('mousedown', this.handleMousedown, false)
+    box.addEventListener('touchstart', this.handleMousedown, false)
+    
 		// add drag handle to document
-		this.overlay.appendChild(box)
+    this.overlay.appendChild(box)
+    
 		// keep track of drag handle
 		this.boxes.push(box)
 	}
 
 	handleMousedown = (evt) => {
-		// note which box
-		this.dragBox = evt.target
+    this.dragBox = evt.target
+    
 		// note starting mousedown position
-		this.dragStartX = evt.clientX
-		this.dragStartY = evt.clientY
+		if (evt.touches) {
+			// for mobile devices get clientX of first touch point
+			this.dragStartX = evt.touches[0].clientX
+		} else {
+			this.dragStartX = evt.clientX
+		}
+
 		// store the width before the drag
-		this.preDragWidth = this.vid.getBoundingClientRect().width
-		this.preDragHeight = this.vid.getBoundingClientRect().height
+    this.preDragWidth = this.vid.width || this.vid.naturalWidth
+    
 		// set the proper cursor everywhere
 		this.setCursor(this.dragBox.style.cursor)
+    
 		// listen for movement and mouseup
+		document.addEventListener('touchmove', this.handleDrag, false)
+		document.addEventListener('touchend', this.handleMouseup, false)
 		document.addEventListener('mousemove', this.handleDrag, false)
 		document.addEventListener('mouseup', this.handleMouseup, false)
 	}
 
 	handleMouseup = () => {
 		// reset cursor everywhere
-		this.setCursor('')
+    this.setCursor('')
+    
 		// stop listening for movement and mouseup
+		document.removeEventListener('touchmove', this.handleDrag)
+		document.removeEventListener('touchend', this.handleMouseup)
 		document.removeEventListener('mousemove', this.handleDrag)
 		document.removeEventListener('mouseup', this.handleMouseup)
 	}
@@ -95,13 +96,20 @@ export class Resize extends BaseModule {
 	handleDrag = evt => {
 		if (!this.vid) return
 
-		const deltaX = evt.clientX - this.dragStartX;
+		// update image size
+		let deltaX;
+		if (evt.touches) {
+			deltaX = evt.touches[0].clientX - this.dragStartX;
+		} else {
+			deltaX = evt.clientX - this.dragStartX;
+		}
+
 		if (this.dragBox === this.boxes[0] || this.dragBox === this.boxes[3]) {
 			// left-side resize handler; dragging right shrinks image
-			this.img.width = Math.round(this.preDragWidth - deltaX)
+			this.vid.width = Math.round(this.preDragWidth - deltaX);
 		} else {
 			// right-side resize handler; dragging right enlarges image
-			this.img.width = Math.round(this.preDragWidth + deltaX)
+			this.vid.width = Math.round(this.preDragWidth + deltaX);
 		}
 		this.requestUpdate()
 	}

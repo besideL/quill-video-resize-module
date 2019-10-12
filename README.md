@@ -1,6 +1,6 @@
 # Quill VideoResize Module
 
-A module for Quill rich text editor to allow videos to be resized.
+A module for Quill rich text editor to allow videos to be resized // fixed for mobile browser bug
 Lazily adaptated from [kensnyder/quill-image-resize-module](https://github.com/kensnyder/quill-image-resize-module)
 
 
@@ -10,7 +10,7 @@ Lazily adaptated from [kensnyder/quill-image-resize-module](https://github.com/k
 
 ```javascript
 import Quill from 'quill';
-import VideoResize from 'quill-video-resize-module';
+import VideoResize from 'quill-video-resize-module-fixed-mobile';
 
 Quill.register('modules/VideoResize', VideoResize);
 

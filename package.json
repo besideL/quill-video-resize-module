@@ -1,7 +1,7 @@
 {
-  "name": "quill-video-resize-module",
-  "version": "1.0.2",
-  "description": "A module for Quill rich text editor to allow videos to be resized.",
+  "name": "quill-video-resize-module-fixed-mobile",
+  "version": "1.0.3",
+  "description": "A module for Quill rich text editor to allow videos to be resized. fixed for mobile",
   "main": "video-resize.min.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -21,7 +21,7 @@
     "resize",
     "sizer"
   ],
-  "author": "@lulhum",
+  "author": "@beside",
   "contributors": [
     {
       "name": "kensnyder",
