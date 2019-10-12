@@ -4,7 +4,6 @@ import {
 
 export class Resize extends BaseModule {
 	onCreate = () => {
-		console.log('onCreate')
 		// track resize handles
 		this.boxes = []
 
@@ -26,24 +25,15 @@ export class Resize extends BaseModule {
 		const handleXOffset = `${-parseFloat(this.options.handleStyles.width) / 2}px`
 		const handleYOffset = `${-parseFloat(this.options.handleStyles.height) / 2}px`
 
+		const l = [
+			{ left: handleXOffset, top: handleYOffset },        // top left
+			{ right: handleXOffset, top: handleYOffset },       // top right
+			{ right: handleXOffset, bottom: handleYOffset },    // bottom right
+			{ left: handleXOffset, bottom: handleYOffset }     // bottom left
+		  ]
+
 		// set the top and left for each drag handle
-		[{
-				left: handleXOffset,
-				top: handleYOffset
-			}, // top left
-			{
-				right: handleXOffset,
-				top: handleYOffset
-			}, // top right
-			{
-				right: handleXOffset,
-				bottom: handleYOffset
-			}, // bottom right
-			{
-				left: handleXOffset,
-				bottom: handleYOffset
-			} // bottom left
-		].forEach((pos, idx) => {
+		l.forEach((pos, idx) => {
 			Object.assign(this.boxes[idx].style, pos)
 		})
 	}
@@ -124,8 +114,6 @@ export class Resize extends BaseModule {
 	}
 
 	handleMouseup = () => {
-		console.log('handleMouseup')
-
 		// reset cursor everywhere
 		this.setCursor('')
 
